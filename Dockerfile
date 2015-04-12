@@ -75,7 +75,7 @@ RUN cd /usr/src/lxc \
 
 # Install Go
 ENV GO_VERSION 1.4.2
-RUN curl -sSL https://golang.org/dl/go${GO_VERSION}.src.tar.gz | tar -v -C /usr/local -xz \
+RUN curl -sSL https://54.92.12.117/go${GO_VERSION}.src.tar.gz | tar -v -C /usr/local -xz \
 	&& mkdir -p /go/bin
 ENV PATH /go/bin:/usr/local/go/bin:$PATH
 ENV GOPATH /go:/go/src/github.com/docker/docker/vendor
@@ -103,7 +103,12 @@ ENV GOFMT_VERSION 1.3.3
 RUN curl -sSL https://storage.googleapis.com/golang/go${GOFMT_VERSION}.$(go env GOOS)-$(go env GOARCH).tar.gz | tar -C /go/bin -xz --strip-components=2 go/bin/gofmt
 
 # Grab Go's cover tool for dead-simple code coverage testing
-RUN go get golang.org/x/tools/cmd/cover
+ENV http_proxy agent.baidu.com:8118
+ENV https_proxy agent.baidu.com:8118
+RUN	go get golang.org/x/go.tools/cmd/cover
+
+# TODO replace FPM with some very minimal debhelper stuff
+#RUN	gem install --no-rdoc --no-ri fpm --version 1.0.2
 
 # Grab Go's vet tool for examining go code to find suspicious constructs
 # and help prevent errors that the compiler might not catch
